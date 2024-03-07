@@ -46,9 +46,29 @@ export const login = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
       maxAge: 86400000,
     });
-    return res.status(200).json({ userID: user._id });
+    res.json(user);
   } catch (err) {
     console.error(err);
     res.status(400).send("Error. Try again.");
+  }
+};
+
+export const logout = (req, res) => {
+  try {
+    res.clearCookie("auth_token");
+    return res.status(200);
+  } catch (err) {
+    console.error(err);
+    res.status(400).send("Error logging out. Try again!");
+  }
+};
+
+export const currentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password").exec();
+    return res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(400).send("Error fetching user information");
   }
 };
