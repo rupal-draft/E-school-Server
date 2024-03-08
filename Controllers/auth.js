@@ -1,6 +1,8 @@
 import User from "./../Models/user.js";
 import { hashPassword, comparePassword } from "./../utils/auth.js";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import bcrypt from "bcrypt";
 
 export const register = async (req, res) => {
   try {
@@ -71,4 +73,59 @@ export const currentUser = async (req, res) => {
     console.error(err);
     res.status(400).send("Error fetching user information");
   }
+};
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.send({ Status: "No User found" });
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "30m",
+    });
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_ID,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    var mailOptions = {
+      from: process.env.EMAIL_ID,
+      to: email,
+      subject: "Reset your password",
+      text: `${process.env.FRONTEND_URL}/reset-password/${user.id}/${token}`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        return res.send({ Status: "Success" });
+      }
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+
+  jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
+    if (err) {
+      return res.status(400).send("Invalid token");
+    } else {
+      bcrypt
+        .hash(password, 10)
+        .then((hash) => {
+          User.findByIdAndUpdate({ _id: id }, { password: hash })
+            .then((u) => res.send({ Status: "Success" }))
+            .catch((err) => res.send({ Status: err }));
+        })
+        .catch((err) => res.send({ Status: err }));
+    }
+  });
 };
