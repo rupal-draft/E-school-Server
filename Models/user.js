@@ -20,6 +20,7 @@ const userSchema = new Schema(
       min: 6,
       max: 64,
     },
+    token: String,
     picture: {
       type: String,
       default: "/avatar.png",
@@ -29,9 +30,15 @@ const userSchema = new Schema(
       default: ["Subscriber"],
       enum: ["Subscriber", "Instructor"],
     },
-    stripe_account_id: String,
-    stripe_seller: {},
-    stripeSession: {},
+
+    qualification: String,
+    experience: {
+      type: Number,
+      min: 1,
+    },
+    bankName: String,
+    branchName: String,
+    accountNumber: Number,
   },
   { timestamps: true }
 );

@@ -24,6 +24,11 @@ export const register = async (req, res) => {
       password: hashedPassword,
     });
     await user.save();
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    await User.findByIdAndUpdate(user.id, { token: token }, { new: true });
 
     return res.json({ ok: true });
   } catch (err) {
@@ -43,11 +48,13 @@ export const login = async (req, res) => {
       expiresIn: "10d",
     });
     user.password = undefined;
+    user.token = token;
     res.cookie("auth_token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 86400000,
+
+      expires: new Date(Date.now() + 6000000),
     });
+
     res.json(user);
   } catch (err) {
     console.error(err);
