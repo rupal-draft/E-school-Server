@@ -5,6 +5,7 @@ import morgan from "morgan";
 import "dotenv/config";
 import authRoutes from "./../Routes/auth.js";
 import instructorRoutes from "./../Routes/instructor.js";
+import { v2 as cloudinary } from "cloudinary";
 
 const app = express();
 app.use(
@@ -18,6 +19,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan("dev"));
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 mongoose
   .connect(process.env.DATABASE)
