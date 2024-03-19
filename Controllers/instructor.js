@@ -1,10 +1,12 @@
 import User from "./../Models/user.js";
+import cloudinary from "cloudinary";
 
 export const makeInstructor = async (req, res) => {
   try {
     const { qualification, experience, bankName, branchName, accountNumber } =
       req.body;
     const user = await User.findById(req.userId).exec();
+
     const statusUpdated = await User.findByIdAndUpdate(
       user._id,
       {
@@ -22,5 +24,27 @@ export const makeInstructor = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(400).send("Error updating role");
+  }
+};
+
+export const imageInstructor = async (req, res) => {
+  try {
+    const result = await cloudinary.uploader.upload(req.files.image.path);
+    // console.log(result);
+    const updatedData = {
+      image: {
+        url: result.secure_url,
+        public_id: result.public_id,
+      },
+    };
+    const user = await User.findById(req.userId).exec();
+    const statusImageUpdated = await User.findByIdAndUpdate(
+      user._id,
+      updatedData,
+      { new: true }
+    ).exec();
+    res.json(statusImageUpdated);
+  } catch (err) {
+    console.error(err);
   }
 };
