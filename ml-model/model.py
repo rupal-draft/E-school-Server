@@ -14,14 +14,14 @@ def load_data(dataset):
 
 def data_preprocess(df):
     # dropping the unnecessary columns
-    df.drop(['url','is_paid','price','num_subscribers','num_reviews','num_lectures','course_id','published_timestamp','profit','published_date','published_time','year','month','day'], axis=1,inplace=True)
+    df.drop(['course_image','url','is_paid','price','num_subscribers','num_reviews','num_lectures','course_id','published_timestamp','profit','published_date','published_time','year','month','day'], axis=1,inplace=True)
     # Filling NaNs with empty string
     df['cleaned'] = df['subject'].fillna('')
     return df
 
 def recommender(input):
     # loading the data
-    df_org = load_data("data/udemy_course_data.csv")
+    df_org = load_data("data/course_data.csv")
     df = df_org.copy()  # copying the dataset to perform preprocessing opertaions on it
     
     # preprocessing the data
