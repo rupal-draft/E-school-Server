@@ -1,5 +1,6 @@
 import User from "./../Models/user.js";
 import cloudinary from "cloudinary";
+import Course from "./../Models/course.js";
 
 export const makeInstructor = async (req, res) => {
   try {
@@ -44,6 +45,17 @@ export const imageInstructor = async (req, res) => {
       { new: true }
     ).exec();
     res.json(statusImageUpdated);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const instructorCourses = async (req, res) => {
+  try {
+    const courses = await Course.find({ instructor: req.userId })
+      .sort({ createdAt: -1 })
+      .exec();
+    res.json(courses);
   } catch (err) {
     console.error(err);
   }

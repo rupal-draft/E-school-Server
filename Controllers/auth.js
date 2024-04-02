@@ -48,12 +48,7 @@ export const login = async (req, res) => {
       expiresIn: "10d",
     });
     user.password = undefined;
-    user.token = token;
-    res.cookie("auth_token", token, {
-      httpOnly: true,
-
-      expires: new Date(Date.now() + 6000000),
-    });
+    await User.findByIdAndUpdate(user.id, { token: token }, { new: true });
 
     res.json(user);
   } catch (err) {
