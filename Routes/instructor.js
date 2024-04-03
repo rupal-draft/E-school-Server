@@ -5,13 +5,11 @@ const router = express.Router();
 import { requireSignin } from "../Middleware/verify.js";
 
 import {
+  getAllUsers,
   imageInstructor,
   instructorCourses,
   makeInstructor,
 } from "../Controllers/instructor.js";
-
-import { getAllUsers, imageInstructor, makeInstructor } from "../Controllers/instructor.js";
-
 
 router.post("/make-instructor", requireSignin, makeInstructor);
 router.post(
@@ -22,6 +20,6 @@ router.post(
 );
 
 router.get("/instructor-courses", requireSignin, instructorCourses);
-router.get("/all-instructor" , getAllUsers)
+router.get("/all-instructor", getAllUsers);
 
 export default router;
