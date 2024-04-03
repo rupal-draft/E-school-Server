@@ -5,6 +5,8 @@ import morgan from "morgan";
 import "dotenv/config";
 import authRoutes from "./../Routes/auth.js";
 import instructorRoutes from "./../Routes/instructor.js";
+import courseRoutes from "./../Routes/course.js";
+
 import { v2 as cloudinary } from "cloudinary";
 
 const app = express();
@@ -14,7 +16,7 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
+app.use(express.json({ limit: "5mb" }));
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -35,6 +37,7 @@ mongoose
 
 app.use("/api", authRoutes);
 app.use("/api", instructorRoutes);
+app.use("/api", courseRoutes);
 
 const port = process.env.PORT || 3000;
 

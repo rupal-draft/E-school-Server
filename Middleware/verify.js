@@ -20,10 +20,21 @@ export const requireSignin = async (req, res, next) => {
 
     req.userId = decoded.userId;
     next();
-    // const authHeader = req.headers.authorization;
-    // console.log("Authorization Header:", authHeader);
   } catch (error) {
     console.error(error);
     return res.status(401).json({ message: "Unauthorized" });
+  }
+};
+
+export const isInstructor = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId).exec();
+    if (!user.role.includes("Instructor")) {
+      return res.sendStatus(403);
+    } else {
+      next();
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
