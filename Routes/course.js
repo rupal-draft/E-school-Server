@@ -7,6 +7,7 @@ import { isInstructor, requireSignin } from "../Middleware/verify.js";
 import {
   addLesson,
   createCourses,
+  deleteLesson,
   imageCourse,
   readCourse,
   removeImage,
@@ -36,5 +37,6 @@ router.post(
 );
 router.post("/course/video-remove/:id", requireSignin, removeVideo);
 router.post("/course/lesson/:slug/:id", requireSignin, addLesson);
+router.post("/course/:slug", requireSignin, deleteLesson);
 
 export default router;
