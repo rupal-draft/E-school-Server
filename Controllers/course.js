@@ -163,3 +163,20 @@ export const addLesson = async (req, res) => {
     return res.status(400).send("Add lesson failed");
   }
 };
+
+export const deleteLesson = async (req, res) => {
+  const { slug } = req.params;
+  const id = req.body.removed[0]._id;
+  console.log(id);
+
+  const course = await Course.findOne({ slug }).exec();
+
+  const deletedCourse = await Course.findByIdAndUpdate(
+    course._id,
+    {
+      $pull: { lessons: { _id: id } },
+    },
+    { new: true }
+  ).exec();
+  res.json(deletedCourse);
+};
