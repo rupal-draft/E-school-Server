@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
+const { ObjectId } = mongoose.Schema;
 
 const userSchema = new Schema(
   {
@@ -30,7 +31,7 @@ const userSchema = new Schema(
       default: ["Subscriber"],
       enum: ["Subscriber", "Instructor"],
     },
-
+    courses: [{ type: ObjectId, ref: "Course" }],
     qualification: String,
     experience: {
       type: Number,

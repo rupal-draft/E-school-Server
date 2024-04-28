@@ -50,7 +50,6 @@ export const imageInstructor = async (req, res) => {
   }
 };
 
-
 export const instructorCourses = async (req, res) => {
   try {
     const courses = await Course.find({ instructor: req.userId })
@@ -64,7 +63,7 @@ export const instructorCourses = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({ role: "Instructor" } );
+    const users = await User.find({ role: "Instructor" });
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -72,3 +71,13 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+export const studentCount = async (req, res) => {
+  try {
+    const users = await User.find({ courses: req.body.courseId })
+      .select("_id")
+      .exec();
+    res.json(users);
+  } catch (err) {
+    console.log(err);
+  }
+};
