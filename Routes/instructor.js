@@ -9,6 +9,7 @@ import {
   imageInstructor,
   instructorCourses,
   makeInstructor,
+  studentCount,
 } from "../Controllers/instructor.js";
 
 router.post("/make-instructor", requireSignin, makeInstructor);
@@ -21,5 +22,6 @@ router.post(
 
 router.get("/instructor-courses", requireSignin, instructorCourses);
 router.get("/all-instructor", getAllUsers);
+router.post("/instructor/student-count", studentCount);
 
 export default router;

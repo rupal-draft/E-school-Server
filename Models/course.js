@@ -69,6 +69,7 @@ const courseSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    prerequisites: String,
     lessons: [lessonSchema],
   },
   { timestamps: true }
