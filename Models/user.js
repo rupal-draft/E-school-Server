@@ -37,6 +37,10 @@ const userSchema = new Schema(
       type: Number,
       min: 1,
     },
+    cart:{
+      products: [{ type: ObjectId, ref: "Product"}],
+      cartTotal: {type:Number, default: 0}
+    },
     bankName: String,
     branchName: String,
     accountNumber: Number,

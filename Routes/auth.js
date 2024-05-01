@@ -10,6 +10,7 @@ import {
   forgotPassword,
   resetPassword,
   userCourses,
+  getMyCart
 } from "./../Controllers/auth.js";
 import { requireSignin } from "../Middleware/verify.js";
 
@@ -20,5 +21,6 @@ router.get("/current-user", requireSignin, currentUser);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:id/:token", resetPassword);
 router.get("/user/get-courses", requireSignin, userCourses);
+router.get("/user/mycart",requireSignin, getMyCart);
 
 export default router;
