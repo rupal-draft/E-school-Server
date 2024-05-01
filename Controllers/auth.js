@@ -71,7 +71,7 @@ export const logout = (req, res) => {
 
 export const currentUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password").exec();
+    const user = await User.findById(req.userId).select("-password").exec();
     return res.json(user);
   } catch (err) {
     console.error(err);
@@ -155,4 +155,14 @@ export const userCourses = async (req, res) => {
     .populate("instructor", "_id name")
     .exec();
   res.json(courses);
+};
+
+export const getMyCart = async (req, res) => {
+  try {
+    // Find the user by _id and populate the 'products' field of the cart with product details
+    const user = await User.findById(req.userId).populate('cart.products');
+    res.json(user.cart);
+  } catch (error) {
+      console.error(error);
+  }
 };

@@ -6,6 +6,7 @@ import "dotenv/config";
 import authRoutes from "./../Routes/auth.js";
 import instructorRoutes from "./../Routes/instructor.js";
 import courseRoutes from "./../Routes/course.js";
+import productRoutes from "./../Routes/product.js";
 
 import { v2 as cloudinary } from "cloudinary";
 
@@ -38,6 +39,7 @@ mongoose
 app.use("/api", authRoutes);
 app.use("/api", instructorRoutes);
 app.use("/api", courseRoutes);
+app.use("/api", productRoutes);
 
 const port = process.env.PORT || 3000;
 
