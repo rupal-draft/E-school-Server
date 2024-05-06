@@ -5,6 +5,7 @@ const router = express.Router();
 import { requireSignin } from "../Middleware/verify.js";
 
 import {
+  getAllPayments,
   getAllUsers,
   imageInstructor,
   instructorCourses,
@@ -24,6 +25,7 @@ router.post(
 router.get("/instructor-courses", requireSignin, instructorCourses);
 router.get("/instructor-products", requireSignin, instructorProducts);
 router.get("/all-instructor", getAllUsers);
+router.get("/instructor-payments", getAllPayments);
 router.post("/instructor/student-count", studentCount);
 
 export default router;
