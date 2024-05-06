@@ -11,6 +11,7 @@ import jwt from "jsonwebtoken";
 
 import { nanoid } from "nanoid";
 import { readFileSync } from "fs";
+import Payement from "../Models/payement.js";
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -343,6 +344,16 @@ export const paymentVerification = async (req, res) => {
     //   message: "Congratulations! You have successfully enrolled",
     //   course: result,
     // });
+
+    const instructor = await User.findById(course.instructor);
+
+    const payment = new Payement({
+      instructor: instructor.name,
+      course: course,
+      suscriber: result.name,
+    });
+
+    await payment.save();
 
     res.redirect(
       `http://localhost:5173/paymentsuccess?reference=${razorpay_payment_id}`

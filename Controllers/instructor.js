@@ -1,7 +1,8 @@
 import User from "./../Models/user.js";
 import cloudinary from "cloudinary";
 import Course from "./../Models/course.js";
-import Product from "./../Models/product.js"
+import Product from "./../Models/product.js";
+import Payement from "../Models/payement.js";
 
 export const makeInstructor = async (req, res) => {
   try {
@@ -83,7 +84,6 @@ export const studentCount = async (req, res) => {
   }
 };
 
-
 export const instructorProducts = async (req, res) => {
   try {
     const products = await Product.find({ instructor: req.userId })
@@ -92,5 +92,14 @@ export const instructorProducts = async (req, res) => {
     res.json(products);
   } catch (err) {
     console.error(err);
+  }
+};
+
+export const getAllPayments = async (req, res) => {
+  try {
+    const payments = await Payement.find().exec();
+    res.json(payments);
+  } catch (err) {
+    console.log(err);
   }
 };
