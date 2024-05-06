@@ -61,11 +61,10 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   try {
-    res.clearCookie("auth_token");
-    return res.status(200);
+    res.redirect("http://localhost:5173/login");
   } catch (err) {
     console.error(err);
-    res.status(400).send("Error logging out. Try again!");
+    res.status(500).send("Error logging out. Please try again!");
   }
 };
 
