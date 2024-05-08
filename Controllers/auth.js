@@ -30,8 +30,6 @@ export const register = async (req, res) => {
       expiresIn: "1d",
     });
 
-    await User.findByIdAndUpdate(user.id, { token: token }, { new: true });
-
     return res.json({ ok: true });
   } catch (err) {
     console.log(err);
@@ -50,9 +48,7 @@ export const login = async (req, res) => {
       expiresIn: "10d",
     });
     user.password = undefined;
-    await User.findByIdAndUpdate(user.id, { token: token }, { new: true });
-
-    res.json(user);
+    res.json({ user, token });
   } catch (err) {
     console.error(err);
     res.status(400).send("Error. Try again.");
