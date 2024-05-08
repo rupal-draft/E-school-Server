@@ -21,7 +21,6 @@ const userSchema = new Schema(
       min: 6,
       max: 64,
     },
-    token: String,
     image: {
       url: String,
       public_id: String,
