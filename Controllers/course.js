@@ -279,6 +279,7 @@ export const checkEnrollment = async (req, res) => {
 export const freeEnrollment = async (req, res) => {
   try {
     const course = await Course.findById(req.params.courseId).exec();
+    const instructor = await User.findById(course.instructor).exec();
     if (course.paid) return;
 
     const result = await User.findByIdAndUpdate(
@@ -288,6 +289,18 @@ export const freeEnrollment = async (req, res) => {
       },
       { new: true }
     ).exec();
+
+    if (result) {
+      const payment = new Payement({
+        instructor: instructor.name,
+        course: course,
+        suscriber: result.name,
+      });
+
+      await payment.save();
+    } else {
+      throw new Error("Payment is not saved");
+    }
     res.json({
       message: "Congratulations! You have successfully enrolled",
       course: result,
