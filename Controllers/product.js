@@ -2,6 +2,7 @@ import cloudinary from "cloudinary";
 import Product from "./../Models/product.js";
 import User from "./../Models/user.js";
 import slugify from "slugify";
+import "dotenv/config";
 
 // Upload image of book cover
 
