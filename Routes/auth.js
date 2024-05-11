@@ -19,7 +19,7 @@ router.post("/login", login);
 router.get("/logout", logout);
 router.get("/current-user", requireSignin, currentUser);
 router.post("/forgot-password", forgotPassword);
-router.post("/reset-password/:id/:token", resetPassword);
+router.post("/reset-password/:id", resetPassword);
 router.get("/user/get-courses", requireSignin, userCourses);
 router.get("/user/mycart",requireSignin, getMyCart);
 

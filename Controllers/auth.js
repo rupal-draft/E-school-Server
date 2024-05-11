@@ -80,9 +80,6 @@ export const forgotPassword = async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.send({ Status: "No User found" });
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "30m",
-    });
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -100,7 +97,7 @@ export const forgotPassword = async (req, res) => {
       We received a request to reset your password for your [Your Platform Name] account. To proceed with this request, please follow the instructions below:
       
         1. Click on the following link to reset your password:
-        ${process.env.FRONTEND_URL}/reset-password/${user.id}/${token}
+        ${process.env.FRONTEND_URL}/reset-password/${user.id}
       
         2. If you're unable to click on the link, please copy and paste it into your web browser's address bar.
       
@@ -126,23 +123,14 @@ export const forgotPassword = async (req, res) => {
   }
 };
 export const resetPassword = async (req, res) => {
-  const { id, token } = req.params;
+  const { id } = req.params;
   const { password } = req.body;
 
-  jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
-    if (err) {
-      return res.status(400).send("Invalid token");
-    } else {
-      bcrypt
-        .hash(password, 10)
-        .then((hash) => {
-          User.findByIdAndUpdate({ _id: id }, { password: hash })
-            .then((u) => res.send({ Status: "Success" }))
-            .catch((err) => res.send({ Status: err }));
-        })
-        .catch((err) => res.send({ Status: err }));
-    }
-  });
+  const hash = await hashPassword(password);
+ User.findByIdAndUpdate({ _id: id }, { password: hash })
+   .then((u) => res.send({ Status: "Success" }))
+  .catch((err) => res.send({ Status: err }));
+
 };
 
 export const userCourses = async (req, res) => {
