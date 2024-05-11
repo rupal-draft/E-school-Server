@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "./../Models/user.js";
+import "dotenv/config";
 
 export const requireSignin = async (req, res, next) => {
   try {

@@ -3,6 +3,7 @@ import cloudinary from "cloudinary";
 import Course from "./../Models/course.js";
 import Product from "./../Models/product.js";
 import Payement from "../Models/payement.js";
+import "dotenv/config";
 
 export const makeInstructor = async (req, res) => {
   try {

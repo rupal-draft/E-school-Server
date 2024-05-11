@@ -1,6 +1,7 @@
 import cloudinary from "cloudinary";
 import Course from "./../Models/course.js";
 import User from "./../Models/user.js";
+import "dotenv/config";
 
 import slugify from "slugify";
 import AWS from "aws-sdk";

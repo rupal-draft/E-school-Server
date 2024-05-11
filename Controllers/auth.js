@@ -1,5 +1,6 @@
 import User from "./../Models/user.js";
 import Course from "./../Models/course.js";
+import "dotenv/config";
 
 import { hashPassword, comparePassword } from "./../utils/auth.js";
 import jwt from "jsonwebtoken";
