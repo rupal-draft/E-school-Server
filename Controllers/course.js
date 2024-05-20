@@ -15,7 +15,7 @@ import { readFileSync } from "fs";
 import Payement from "../Models/payement.js";
 
 const awsConfig = {
-  accessKeyId: process.env.AWS_ACCESS_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY1,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY1,
   region: process.env.AWS_REGION1,
   apiVersion: process.env.AWS_API_VERSION,
