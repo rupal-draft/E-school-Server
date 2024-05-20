@@ -3,10 +3,10 @@ import cors from "cors";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import "dotenv/config";
-import authRoutes from "./../Routes/auth.js";
-import instructorRoutes from "./../Routes/instructor.js";
-import courseRoutes from "./../Routes/course.js";
-import productRoutes from "./../Routes/product.js";
+import authRoutes from "./Routes/auth.js";
+import instructorRoutes from "./Routes/instructor.js";
+import courseRoutes from "./Routes/course.js";
+import productRoutes from "./Routes/product.js";
 
 import { v2 as cloudinary } from "cloudinary";
 
