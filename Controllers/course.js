@@ -370,7 +370,7 @@ export const paymentVerification = async (req, res) => {
     await payment.save();
 
     res.redirect(
-      `http://localhost:5173/paymentsuccess?reference=${razorpay_payment_id}`
+        `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
     );
   } else {
     return res.status(400).send("Payment failed!");
