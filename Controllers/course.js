@@ -155,8 +155,18 @@ export const addLesson = async (req, res) => {
   try {
     const { slug, id } = req.params;
     const { title, content, preview, video } = req.body;
+    console.log(req.body);
 
-    if (req.userId != id) {
+    if (!title) {
+      return res.status(400).send("Title is required");
+    }
+    if (!content) {
+      return res.status(400).send("Content is required");
+    }
+    if (preview === undefined || preview === null) {
+      return res.status(400).send("Preview status is required");
+    }
+    if (req.userId !== id) {
       return res.status(400).send("Unauthorized");
     }
 
@@ -168,7 +178,7 @@ export const addLesson = async (req, res) => {
             title,
             content,
             free_preview: preview,
-            video_link: video,
+            video_link: video.Location,
             slug: slugify(title),
           },
         },
@@ -177,6 +187,7 @@ export const addLesson = async (req, res) => {
     )
       .populate("instructor", "_id name")
       .exec();
+
     res.json(updated);
   } catch (err) {
     console.log(err);
@@ -187,22 +198,24 @@ export const addLesson = async (req, res) => {
 export const deleteLesson = async (req, res) => {
   const { slug } = req.params;
   const id = req.body.removed[0]._id;
-  console.log(id);
-  const video = req.body.removed[0].video_link;
+  // console.log(req.body.removed[0]);
+  if (req.body.removed[0].video_link) {
+    const video = req.body.removed[0].video_link;
 
-  const { Bucket, Key } = video;
+    const { Bucket, Key } = video;
 
-  const params = {
-    Bucket,
-    Key,
-  };
+    const params = {
+      Bucket,
+      Key,
+    };
 
-  S3.deleteObject(params, (err, data) => {
-    if (err) {
-      res.sendStatus(400);
-    }
-    console.log(data);
-  });
+    S3.deleteObject(params, (err, data) => {
+      if (err) {
+        res.sendStatus(400);
+      }
+      console.log(data);
+    });
+  }
 
   const course = await Course.findOne({ slug }).exec();
 
@@ -370,7 +383,7 @@ export const paymentVerification = async (req, res) => {
     await payment.save();
 
     res.redirect(
-        `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
+      `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
     );
   } else {
     return res.status(400).send("Payment failed!");
