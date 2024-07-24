@@ -19,7 +19,6 @@ export const makeInstructor = async (req, res) => {
         bankName: bankName,
         branchName: branchName,
         accountNumber: accountNumber,
-
         $addToSet: { role: "Instructor" },
       },
       { new: true }
