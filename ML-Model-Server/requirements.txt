@@ -3,3 +3,4 @@ scikit_learn==1.4.1.post1
 scipy==1.13.0
 starlette==0.37.2
 uvicorn==0.29.0
+python-dotenv==1.0.1

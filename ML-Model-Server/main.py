@@ -1,5 +1,7 @@
+import os
 import uvicorn
 import json
+from dotenv import load_dotenv
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
@@ -8,10 +10,14 @@ from model import recommend_course  # Assuming `recommend_course` is defined in 
 # Create the Starlette app instance
 app = Starlette()
 
+# Load environment variables from .env file
+load_dotenv()
+
 # Enable CORS
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     expose_headers=["*"],
     allow_credentials=True,
     allow_methods=["*"],
