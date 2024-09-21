@@ -10,6 +10,9 @@ COPY . /app
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Ensure nltk is installed before downloading the data
+RUN pip install nltk
+
 # Download NLTK data
 RUN python -m nltk.downloader punkt stopwords wordnet
 
@@ -17,4 +20,4 @@ RUN python -m nltk.downloader punkt stopwords wordnet
 EXPOSE 8000
 
 # Run the application
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
